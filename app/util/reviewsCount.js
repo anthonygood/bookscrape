@@ -10,7 +10,7 @@ const getNumFromText = text => {
 const scrapeReviewsCount = async ({
   page,
   sitename,
-  filename,
+  prevScrape,
   selector,
   getNum = getNumFromText,
   getElContent = getTextContent
@@ -19,25 +19,20 @@ const scrapeReviewsCount = async ({
   const reviewsCountText = await page.evaluate(getElContent, reviewsCountEl)
   const reviewsCount = getNum(reviewsCountText)
 
-  const scrapes = readOrInitJsonArray(filename)
-  const latest = scrapes[scrapes.length - 1]
-
-  if (latest) console.log(
+  if (prevScrape) console.log(
     `
-    Last change of ${sitename} scraped at: ${latest.createdAt}
-    Number of reviews was: ${latest.reviewsCount}
+    Last change of ${sitename} scraped at: ${prevScrape.createdAt}
+    Number of reviews was: ${prevScrape.reviewsCount}
     Number of reviews now: ${reviewsCount}
     `
   )
 
-  if (latest && reviewsCount <= latest.reviewsCount) return scrapes
+  if (prevScrape && reviewsCount <= prevScrape.reviewsCount) return null
 
-  scrapes.push({
+  return {
     reviewsCount,
     createdAt: new Date()
-  })
-
-  return scrapes
+  }
 }
 
 const scrapeReviewsCountFromSite = page => async ({
@@ -50,16 +45,22 @@ const scrapeReviewsCountFromSite = page => async ({
 }) => {
   await page.goto(url)
 
-  const scrapes = await scrapeReviewsCount({
+  const scrapes = readOrInitJsonArray(filename)
+  const prevScrape = scrapes[scrapes.length - 1]
+
+  const newScrape = await scrapeReviewsCount({
+    prevScrape,
     selector,
     sitename,
-    filename,
     page,
     getElContent,
     getNum
   })
 
-  return output(filename, scrapes)
+  return newScrape && output(
+    filename,
+    scrapes.concat(newScrape)
+  )
 }
 
 module.exports = {
