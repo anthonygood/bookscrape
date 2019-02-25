@@ -23,7 +23,7 @@ class Scraper extends EventEmitter {
   }
 
   get prevScrape() {
-    return this.scrapes[this.scrapes.length - 1]
+    return this.scrapes.last
   }
 
   get config() {

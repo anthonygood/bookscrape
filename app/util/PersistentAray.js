@@ -3,7 +3,6 @@ const { output, readOrInitJsonArray } = require('./fs')
 class PersistentArray {
   constructor(filename) {
     this.filename = filename
-    console.log('readOrInit: ', readOrInitJsonArray)
     this._arr = readOrInitJsonArray(filename)
   }
 
@@ -18,8 +17,8 @@ class PersistentArray {
     return this._arr
   }
 
-  get length() {
-    return this._arr.length
+  get last() {
+    return this._arr[this._arr.length - 1]
   }
 }
 
