@@ -19,23 +19,16 @@ const scrapeReviewsCount = async ({
   const reviewsCountText = await page.evaluate(getElContent, reviewsCountEl)
   const reviewsCount = getNum(reviewsCountText)
 
-  if (prevScrape) console.log(
-    `
-    Last change of ${sitename} scraped at: ${prevScrape.createdAt}
-    Number of reviews was: ${prevScrape.reviewsCount}
-    Number of reviews now: ${reviewsCount}
-    `
-  )
-
   if (prevScrape && reviewsCount <= prevScrape.reviewsCount) return null
 
   return {
+    sitename,
     reviewsCount,
     createdAt: new Date()
   }
 }
 
-const scrapeReviewsCountFromSite = page => async ({
+const scrapeReviewsCountFromSite = (page, eventEmitter) => async ({
   url,
   selector,
   sitename,
@@ -56,6 +49,15 @@ const scrapeReviewsCountFromSite = page => async ({
     getElContent,
     getNum
   })
+
+  if (newScrape) {
+    eventEmitter.emit('change', sitename, prevScrape, newScrape)
+
+    return output(
+      filename,
+      scrapes.concat(newScrape)
+    )
+  }
 
   return newScrape && output(
     filename,
