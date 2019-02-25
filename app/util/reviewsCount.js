@@ -22,7 +22,6 @@ const scrapeReviewsCount = async ({
   if (prevScrape && reviewsCount <= prevScrape.reviewsCount) return null
 
   return {
-    sitename,
     reviewsCount,
     createdAt: new Date()
   }

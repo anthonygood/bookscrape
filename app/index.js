@@ -1,17 +1,19 @@
 const puppeteer = require('puppeteer')
-const Scraper = require('./Scraper')
-const readersfirst = require('./readersfirst')
-const amazon = require('./amazon')
-const goodreads = require('./goodreads')
+const {
+  AmazonScraper,
+  GoodreadsScraper,
+  ReadersFirstScraper
+} = require('./scrapers')
 
 const scrape = async () => {
-  const scraper = new Scraper()
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
 
-  await scraper.scrape(readersfirst)
-  await scraper.scrape(amazon)
-  await scraper.scrape(goodreads)
+  await new AmazonScraper(page).scrape()
+  await new GoodreadsScraper(page).scrape()
+  await new ReadersFirstScraper(page).scrape()
 
-  await scraper.close()
+  await browser.close()
 }
 
 scrape().then(() => console.log('Done scraping.'))
