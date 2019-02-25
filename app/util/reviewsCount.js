@@ -1,30 +1,10 @@
-const { writeFileSync } = require('fs')
-const path = require('path')
+const { output, readOrInitJsonArray } = require('./fs')
 
-const OUTPUT_DIR = 'output'
-
-const outputPath = filename =>
-  path.resolve(OUTPUT_DIR, filename)
+const getTextContent = el => el.textContent
 
 const getNumFromText = text => {
   const string = text.trim().match(/\d+/)[0]
   return string && Number(string)
-}
-
-const output = (filename, object) =>
-  writeFileSync(
-    outputPath(filename),
-    JSON.stringify(object, null, 2)
-  )
-
-const readOrInitJsonArray = filename => {
-  const path = outputPath(filename)
-  try {
-    return require(path)
-  } catch (err) {
-    writeFileSync(path, '[]')
-    return require(path)
-  }
 }
 
 const scrapeReviewsCount = async ({
@@ -33,7 +13,7 @@ const scrapeReviewsCount = async ({
   filename,
   selector,
   getNum = getNumFromText,
-  getElContent = el => el.textContent
+  getElContent = getTextContent
 }) => {
   const reviewsCountEl = await page.$(selector)
   const reviewsCountText = await page.evaluate(getElContent, reviewsCountEl)
@@ -60,8 +40,29 @@ const scrapeReviewsCount = async ({
   return scrapes
 }
 
+const scrapeReviewsCountFromSite = page => async ({
+  url,
+  selector,
+  sitename,
+  filename,
+  getElContent = getTextContent,
+  getNum = getNumFromText
+}) => {
+  await page.goto(url)
+
+  const scrapes = await scrapeReviewsCount({
+    selector,
+    sitename,
+    filename,
+    page,
+    getElContent,
+    getNum
+  })
+
+  return output(filename, scrapes)
+}
+
 module.exports = {
-  output,
-  readOrInitJsonArray,
-  scrapeReviewsCount
+  scrapeReviewsCount,
+  scrapeReviewsCountFromSite
 }
