@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer')
 const { scrapeReadersFirst } = require('./readersfirst')
 const { scrapeAmazon } = require('./amazon')
+const { scrapeGoodreads } = require('./goodreads')
 
 const scrape = async () => {
   const browser = await puppeteer.launch()
@@ -8,6 +9,7 @@ const scrape = async () => {
 
   await scrapeReadersFirst(page)
   await scrapeAmazon(page)
+  await scrapeGoodreads(page)
   await browser.close()
 }
 
