@@ -1,11 +1,29 @@
 const EventEmitter = require('events')
-const { scrapeReviewsCountFromSite } = require('../util')
+const { scrapeReviewsCount, PersistentArray } = require('../util')
 
 class Scraper extends EventEmitter {
+  // Factory method
+  static scrape(page) {
+    return new this(page).scrape()
+  }
+
   constructor(page) {
+    if (!page) throw new TypeError('The \'page\' parameter must be passed to scraper constructor.')
+
     super()
     this.page = page
     this.on('change', this.onChange)
+  }
+
+  // Transparently wrap JSON array on disc and treat as normal array (sort of)
+  get scrapes() {
+    this._persistentArray = this._persistentArray || new PersistentArray(this.config.filename)
+
+    return this._persistentArray
+  }
+
+  get prevScrape() {
+    return this.scrapes[this.scrapes.length - 1]
   }
 
   get config() {
@@ -25,8 +43,25 @@ class Scraper extends EventEmitter {
 
   async scrape() {
     const page = await this.page
-    // TODO tidy
-    return scrapeReviewsCountFromSite(page, this)(this.config)
+
+    await page.goto(this.config.url)
+
+    const newScrape = await scrapeReviewsCount({
+      prevScrape: this.prevScrape,
+      page,
+      ...this.config
+    })
+
+    if (newScrape) {
+      this.emit(
+        'change',
+        this.config.sitename,
+        this.prevScrape,
+        newScrape
+      )
+
+      this.scrapes.push(newScrape)
+    }
   }
 }
 

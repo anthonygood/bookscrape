@@ -9,7 +9,6 @@ const getNumFromText = text => {
 
 const scrapeReviewsCount = async ({
   page,
-  sitename,
   prevScrape,
   selector,
   getNum = getNumFromText,
@@ -57,11 +56,6 @@ const scrapeReviewsCountFromSite = (page, eventEmitter) => async ({
       scrapes.concat(newScrape)
     )
   }
-
-  return newScrape && output(
-    filename,
-    scrapes.concat(newScrape)
-  )
 }
 
 module.exports = {

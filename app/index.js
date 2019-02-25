@@ -9,9 +9,9 @@ const scrape = async () => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
-  await new AmazonScraper(page).scrape()
-  await new GoodreadsScraper(page).scrape()
-  await new ReadersFirstScraper(page).scrape()
+  await AmazonScraper.scrape(page)
+  await GoodreadsScraper.scrape(page)
+  await ReadersFirstScraper.scrape(page)
 
   await browser.close()
 }

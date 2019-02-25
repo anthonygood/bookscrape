@@ -1,7 +1,10 @@
-const { scrapeReviewsCountFromSite } = require('./reviewsCount')
-const { output } = require('./fs')
+const { scrapeReviewsCount } = require('./reviewsCount')
+const { output, readOrInitJsonArray } = require('./fs')
+const PersistentArray = require('./PersistentAray')
 
 module.exports = {
+  PersistentArray,
   output,
-  scrapeReviewsCountFromSite
+  readOrInitJsonArray,
+  scrapeReviewsCount
 }
