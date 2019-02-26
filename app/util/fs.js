@@ -4,7 +4,7 @@ const { writeFileSync } = require('fs')
 const OUTPUT_DIR = 'output'
 
 const outputPath = filename =>
-  path.resolve(OUTPUT_DIR, filename)
+  path.resolve(__filename, '../../../', OUTPUT_DIR, filename)
 
 const output = (filename, object) =>
   writeFileSync(
