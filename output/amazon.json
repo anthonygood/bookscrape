@@ -2,5 +2,17 @@
   {
     "reviewsCount": 14,
     "createdAt": "2019-02-25T14:32:21.746Z"
+  },
+  {
+    "reviewsCount": 14,
+    "createdAt": "2019-02-26T18:48:59.728Z",
+    "Books": 37493,
+    "Books > Fiction > Political": 254,
+    "Books > Crime, Thrillers & Mystery > Political": 346,
+    "Books > Fiction > Humour": 987,
+    "Paid in Kindle Store": 9993,
+    "Kindle Store > Books > Literature & Fiction > Genre Fiction > Political": 67,
+    "Kindle Store > Books > Crime, Thriller & Mystery > Thrillers > Terrorism": 72,
+    "Kindle Store > Books > Literature & Fiction > Literary Fiction > Humour": 83
   }
 ]
