@@ -1,10 +1,11 @@
 const EventEmitter = require('events')
 const { scrapeReviewsCount, PersistentArray } = require('../util')
+const dirty = require('../util/dirty')
 
 class Scraper extends EventEmitter {
   // Factory method
   static scrape(page) {
-    return new this(page).scrape()
+    return new this(page).scrapeAndSave()
   }
 
   constructor(page) {
@@ -12,7 +13,7 @@ class Scraper extends EventEmitter {
 
     super()
     this.page = page
-    this.on('change', this.onChange)
+    this.on('change:reviews', this.onChangeReviews)
   }
 
   // Transparently wrap JSON array on disc and treat as normal array (sort of)
@@ -30,38 +31,43 @@ class Scraper extends EventEmitter {
     throw new Error('Config missing for scraper.')
   }
 
-  onChange(sitename, prevVal, nextVal) {
-    prevVal = prevVal || { createdAt: 'Never!', reviewsCount: 'n/a' }
-    console.log(
-      `
-      Last change of ${sitename} scraped at: ${prevVal.createdAt}
-      Number of reviews was: ${prevVal.reviewsCount}
-      Number of reviews now: ${nextVal.reviewsCount}
-      `
-    )
+  async scrapeAndSave() {
+    const data = await this.scrape()
+
+    if (dirty(data, this.prevScrape)) this.scrapes.push(data)
   }
 
-  async scrape() {
+  async scrape(timeNow = new Date()) {
     const page = await this.page
-
     await page.goto(this.config.url)
 
-    const newScrape = await scrapeReviewsCount({
-      prevScrape: this.prevScrape,
+    const reviewsCount = await scrapeReviewsCount({
       page,
       ...this.config
     })
 
-    if (newScrape) {
+    const newScrape = { reviewsCount, createdAt: timeNow }
+
+    if (this.prevScrape && reviewsCount > this.prevScrape.reviewsCount) {
       this.emit(
-        'change',
-        this.config.sitename,
+        'change:reviews',
         this.prevScrape,
         newScrape
       )
-
-      this.scrapes.push(newScrape)
     }
+
+    return newScrape
+  }
+
+  onChangeReviews(prevVal, nextVal) {
+    prevVal = prevVal || { createdAt: 'Never!', reviewsCount: 'n/a' }
+    console.log(
+      `
+      Last change of ${this.config.sitename} reviews scraped at: ${prevVal.createdAt}
+      Number of reviews was: ${prevVal.reviewsCount}
+      Number of reviews now: ${nextVal.reviewsCount}
+      `
+    )
   }
 }
 

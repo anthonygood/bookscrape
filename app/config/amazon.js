@@ -5,5 +5,6 @@ module.exports = {
   sitename: 'Amazon',
   filename: 'amazon.json',
   url: HARDCOVER_URL,
+  kindleUrl: KINDLE_URL,
   selector: '#acrCustomerReviewText',
 }
