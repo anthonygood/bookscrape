@@ -34,7 +34,9 @@ class Scraper extends EventEmitter {
   async scrapeAndSave() {
     const data = await this.scrape()
 
-    if (dirty(data, this.prevScrape)) this.scrapes.push(data)
+    if (dirty(data, this.prevScrape, { ignore: ['createdAt'] })) {
+      this.scrapes.push(data)
+    }
   }
 
   async scrape(timeNow = new Date()) {

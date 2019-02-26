@@ -48,3 +48,13 @@ assert.equal(
   ),
   true
 )
+
+assert.equal(
+  dirty(
+    { foo: 2, createdAt: 1 },
+    { foo: 2, createdAt: 2 },
+    { ignore: 'createdAt' }
+  ),
+  false,
+  'It accepts whitelist of ignored keys'
+)
