@@ -16,12 +16,7 @@ const scrapeReviewsCount = async ({
   const reviewsCountText = await page.evaluate(getElContent, reviewsCountEl)
   const reviewsCount = getNum(reviewsCountText)
 
-  if (prevScrape && reviewsCount <= prevScrape.reviewsCount) return null
-
-  return {
-    reviewsCount,
-    createdAt: new Date()
-  }
+  return reviewsCount
 }
 
 module.exports = {
