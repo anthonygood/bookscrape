@@ -18,17 +18,17 @@ const loggableDiff = (
 
   let val
   if (isNew) {
-    key = `${key}:`.green()
+    key = `+ ${key}:`.green()
     val = newVal.toString().green()
   } else if (deleted) {
-    key = `${key}:`.red()
+    key = `- ${key}:`.red()
     val = oldVal.toString().red()
   } else {
     difference = difference > 0 ?
       colouriseIncrease(`+${difference}`) :
       colouriseDecrease(`${difference}`)
 
-    key = `${key}:`
+    key = `  ${key}:`
     val = `${newVal} (${difference})`
   }
 

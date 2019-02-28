@@ -1,6 +1,7 @@
 const EventEmitter = require('events')
 const { scrapeReviewsCount, PersistentArray } = require('../util')
 const dirty = require('../util/dirty')
+const { logDiff } = require('../util/diff')
 
 class Scraper extends EventEmitter {
   // Factory method
@@ -63,12 +64,12 @@ class Scraper extends EventEmitter {
 
   onChangeReviews(prevVal, nextVal) {
     prevVal = prevVal || { createdAt: 'Never!', reviewsCount: 'n/a' }
+    const { createdAt: createdAtPrev, ...restPrev} = prevVal
+    const { createdAt: createdAtNext, ...restNext } = nextVal
     console.log(
-      `
-      Last change of ${this.config.sitename} reviews scraped at: ${prevVal.createdAt}.
-      This scrape at: ${nextVal.createdAt}.
-      Number of reviews increased from ${prevVal.reviewsCount} to ${nextVal.reviewsCount}.
-      `
+      `Last change of ${this.config.sitename} reviews scraped at: ${prevVal.createdAt}.
+This scrape at: ${nextVal.createdAt}.
+${logDiff(restPrev, restNext)}`
     )
   }
 }
