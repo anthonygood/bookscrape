@@ -65,9 +65,9 @@ class Scraper extends EventEmitter {
     prevVal = prevVal || { createdAt: 'Never!', reviewsCount: 'n/a' }
     console.log(
       `
-      Last change of ${this.config.sitename} reviews scraped at: ${prevVal.createdAt}
-      Number of reviews was: ${prevVal.reviewsCount}
-      Number of reviews now: ${nextVal.reviewsCount}
+      Last change of ${this.config.sitename} reviews scraped at: ${prevVal.createdAt}.
+      This scrape at: ${nextVal.createdAt}.
+      Number of reviews increased from ${prevVal.reviewsCount} to ${nextVal.reviewsCount}.
       `
     )
   }

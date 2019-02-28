@@ -1,3 +1,4 @@
+require('./util/colours')
 const puppeteer = require('puppeteer')
 const {
   AmazonScraper,
@@ -16,4 +17,4 @@ const scrape = async () => {
   await browser.close()
 }
 
-scrape().then(() => console.log('Done scraping.'))
+scrape().then(() => console.log(`Finished scraping at ${new Date()}.`))

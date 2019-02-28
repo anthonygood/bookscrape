@@ -2,6 +2,7 @@ const Scraper = require('./Scraper')
 const config = require('../config/amazon')
 const parseBestSellersRank = require('../util/parseBestSellersRank')
 const dirty = require('../util/dirty')
+const { logDiffInverse } = require('../util/diff')
 
 class AmazonScraper extends Scraper {
   constructor(page) {
@@ -16,7 +17,7 @@ class AmazonScraper extends Scraper {
 
   async scrape(timeNow = new Date()) {
     const scrapeData = await super.scrape(timeNow)
-    const rankStats = await this.scrapeBestsellerStats()
+    const rankStats = await this.scrapeBestsellerStats(timeNow)
     return {
       ...scrapeData,
       ...rankStats
@@ -27,7 +28,7 @@ class AmazonScraper extends Scraper {
     return
   }
 
-  async scrapeBestsellerStats() {
+  async scrapeBestsellerStats(timeNow = new Date()) {
     // TODO
     const page = await this.page
     const hardcoverStats = await this.scrapeStatsOnPage()
@@ -38,12 +39,13 @@ class AmazonScraper extends Scraper {
 
     const newScrape = {
       ...hardcoverStats,
-      ...kindleStats
+      ...kindleStats,
+      createdAt: timeNow
     }
 
     if (
       this.prevScrape &&
-      dirty(newScrape, this.prevScrape)
+      dirty(newScrape, this.prevScrape, { ignore: ['createdAt'] })
     ) {
       this.emit('change:rank', this.prevScrape, newScrape)
     }
@@ -61,14 +63,13 @@ class AmazonScraper extends Scraper {
   async onChangeRank(prevVal, nextVal) {
     {
       prevVal = prevVal || { createdAt: 'Never!' }
+      const { createdAt: createdAtPrev, reviewsCount, ...prevRest } = prevVal
+      const { createdAt: createdAtNext, ...nextRest } = nextVal
+      const diffLog = logDiffInverse(prevRest, nextRest)
       console.log(
-        `
-        Last change of ${this.config.sitename} rank scraped at: ${prevVal.createdAt}
-        Now:\n${
-          Object.keys(nextVal).map(key =>
-            `          ${key}: ${nextVal[key]}\n`).join('')
-        }
-        `
+        `Last change of ${this.config.sitename} rank scraped at: ${prevVal.createdAt}
+This scrape at ${nextVal.createdAt}:\n
+${diffLog}`
       )
     }
   }
