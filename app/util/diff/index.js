@@ -1,3 +1,4 @@
+require('../commaSeparated')
 const Node = require('./Node')
 
 const loggableDiff = (
@@ -14,19 +15,21 @@ const loggableDiff = (
     key
   } = nodeData
 
-  if (!dirty) return { [`  ${key}:`]: newVal.toString() }
+  newVal = newVal && newVal.commaSeparated()
+
+  if (!dirty) return { [`  ${key}:`]: newVal }
 
   let val
   if (isNew) {
     key = `+ ${key}:`.green()
-    val = newVal.toString().green()
+    val = newVal.green()
   } else if (deleted) {
     key = `- ${key}:`.red()
-    val = oldVal.toString().red()
+    val = oldVal.commaSeparated().red()
   } else {
     difference = difference > 0 ?
-      colouriseIncrease(`+${difference}`) :
-      colouriseDecrease(`${difference}`)
+      colouriseIncrease(`+${difference.commaSeparated()}`) :
+      colouriseDecrease(`${difference.commaSeparated()}`)
 
     key = `  ${key}:`
     val = `${newVal} (${difference})`

@@ -23,8 +23,7 @@ class AmazonScraper extends Scraper {
     // but the Books and Paid in Kindle Store are common to both.
     const { prevScrape } = this
     return data[BOOKS_KEY] !== prevScrape[BOOKS_KEY] &&
-      data[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY] &&
-      super.dirty(data)
+      data[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY]
   }
 
   async scrape(timeNow = new Date()) {
