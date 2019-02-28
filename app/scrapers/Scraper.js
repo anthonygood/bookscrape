@@ -35,7 +35,7 @@ class Scraper extends EventEmitter {
   async scrapeAndSave() {
     const data = await this.scrape()
 
-    if (dirty(data, this.prevScrape, { ignore: ['createdAt'] })) {
+    if (this.dirty(data)) {
       this.scrapes.push(data)
     }
   }
@@ -60,6 +60,10 @@ class Scraper extends EventEmitter {
     }
 
     return newScrape
+  }
+
+  dirty(data) {
+    dirty(data, this.prevScrape, { ignore: ['createdAt'] })
   }
 
   onChangeReviews(prevVal, nextVal) {

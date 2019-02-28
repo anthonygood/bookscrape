@@ -14,7 +14,7 @@ const loggableDiff = (
     key
   } = nodeData
 
-  if (!dirty) return { [`${key}:`]: newVal.toString() }
+  if (!dirty) return { [`  ${key}:`]: newVal.toString() }
 
   let val
   if (isNew) {

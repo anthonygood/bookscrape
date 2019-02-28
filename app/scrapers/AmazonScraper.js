@@ -4,6 +4,9 @@ const parseBestSellersRank = require('../util/parseBestSellersRank')
 const dirty = require('../util/dirty')
 const { logDiffInverse } = require('../util/diff')
 
+const BOOKS_KEY = 'Books'
+const PAID_KINDLE_KEY = 'Paid in Kindle Store'
+
 class AmazonScraper extends Scraper {
   constructor(page) {
     super(page)
@@ -13,6 +16,15 @@ class AmazonScraper extends Scraper {
 
   get config() {
     return config
+  }
+
+  dirty(data) {
+    // Amazon returns stats in different format about half the time,
+    // but the Books and Paid in Kindle Store are common to both.
+    const { prevScrape } = this
+    return data[BOOKS_KEY] !== prevScrape[BOOKS_KEY] &&
+      data[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY] &&
+      super.dirty(data)
   }
 
   async scrape(timeNow = new Date()) {
@@ -45,7 +57,7 @@ class AmazonScraper extends Scraper {
 
     if (
       this.prevScrape &&
-      dirty(newScrape, this.prevScrape, { ignore: ['createdAt'] })
+      this.dirty(newScrape)
     ) {
       this.emit('change:rank', this.prevScrape, newScrape)
     }
