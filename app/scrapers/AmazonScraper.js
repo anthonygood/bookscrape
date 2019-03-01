@@ -18,14 +18,6 @@ class AmazonScraper extends Scraper {
     return config
   }
 
-  dirty(data) {
-    // Amazon returns stats in different format about half the time,
-    // but the Books and Paid in Kindle Store are common to both.
-    const { prevScrape } = this
-    return data[BOOKS_KEY] !== prevScrape[BOOKS_KEY] &&
-      data[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY]
-  }
-
   async scrape(timeNow = new Date()) {
     const scrapeData = await super.scrape(timeNow)
     const rankStats = await this.scrapeBestsellerStats(timeNow)
@@ -56,12 +48,22 @@ class AmazonScraper extends Scraper {
 
     if (
       this.prevScrape &&
-      this.dirty(newScrape)
+      newScrape[BOOKS_KEY]       !== prevScrape[BOOKS_KEY] &&
+      newScrape[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY]
     ) {
       this.emit('change:rank', this.prevScrape, newScrape)
     }
 
     return newScrape
+  }
+
+  dirty(data) {
+    // Amazon returns stats in different format about half the time,
+    // but the Books and Paid in Kindle Store are common to both.
+    const { prevScrape } = this
+    return data.reviewsCount !== prevScrape.reviewsCount ||
+      data[BOOKS_KEY] !== prevScrape[BOOKS_KEY] &&
+      data[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY]
   }
 
   async scrapeStatsOnPage() {

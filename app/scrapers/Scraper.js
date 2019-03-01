@@ -67,14 +67,12 @@ class Scraper extends EventEmitter {
   }
 
   onChangeReviews(prevVal, nextVal) {
-    prevVal = prevVal || { createdAt: 'Never!', reviewsCount: 'n/a' }
-    const { createdAt: createdAtPrev, ...restPrev} = prevVal
-    const { createdAt: createdAtNext, ...restNext } = nextVal
+    prevVal = prevVal || { createdAt: 'Never!' }
+
     console.log(
       `Last change of ${this.config.sitename} reviews scraped at: ${prevVal.createdAt}.
 This scrape at: ${nextVal.createdAt}.
-${logDiff(restPrev, restNext)}`
-    )
+${logDiff({ reviewsCount: prevVal.reviewsCount }, { reviewsCount: nextVal.reviewsCount })}`)
   }
 }
 

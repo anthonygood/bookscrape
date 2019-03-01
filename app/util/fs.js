@@ -24,5 +24,6 @@ const readOrInitJsonArray = filename => {
 
 module.exports = {
   output,
+  outputPath,
   readOrInitJsonArray
 }
