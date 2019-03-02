@@ -63,7 +63,7 @@ class Scraper extends EventEmitter {
   }
 
   dirty(data) {
-    dirty(data, this.prevScrape, { ignore: ['createdAt'] })
+    return dirty(data, this.prevScrape, { ignore: ['createdAt'] })
   }
 
   onChangeReviews(prevVal, nextVal) {

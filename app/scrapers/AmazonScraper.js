@@ -1,7 +1,6 @@
 const Scraper = require('./Scraper')
 const config = require('../config/amazon')
 const parseBestSellersRank = require('../util/parseBestSellersRank')
-const dirty = require('../util/dirty')
 const { logDiffInverse } = require('../util/diff')
 
 const BOOKS_KEY = 'Books'
@@ -32,7 +31,6 @@ class AmazonScraper extends Scraper {
   }
 
   async scrapeBestsellerStats(timeNow = new Date()) {
-    // TODO
     const page = await this.page
     const hardcoverStats = await this.scrapeStatsOnPage()
 
@@ -48,8 +46,8 @@ class AmazonScraper extends Scraper {
 
     if (
       this.prevScrape &&
-      newScrape[BOOKS_KEY]       !== prevScrape[BOOKS_KEY] &&
-      newScrape[PAID_KINDLE_KEY] !== prevScrape[PAID_KINDLE_KEY]
+      newScrape[BOOKS_KEY]       !== this.prevScrape[BOOKS_KEY] &&
+      newScrape[PAID_KINDLE_KEY] !== this.prevScrape[PAID_KINDLE_KEY]
     ) {
       this.emit('change:rank', this.prevScrape, newScrape)
     }

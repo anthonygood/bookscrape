@@ -4,7 +4,10 @@ Number.prototype.commaSeparated = function() {
   let count = 1
   for (let i = asString.length - 1; i >= 0; i-- && count++) {
     const char = asString[i]
-    const shouldPlaceCommaHere = count % 3 === 0 && count !== asString.length
+    const prevChar = asString[i - 1]
+    const shouldPlaceCommaHere = count % 3 === 0 &&
+      count !== asString.length &&
+      prevChar !== '-'
     const nextChar = shouldPlaceCommaHere ? `,${char}` : char
     chars[i] = nextChar
   }
