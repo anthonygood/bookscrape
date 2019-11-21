@@ -17,8 +17,8 @@ class Scraper extends EventEmitter {
     this.on('change:reviews', this.onChangeReviews)
   }
 
-  // Transparently wrap JSON array on disc and treat as normal array (sort of)
   get scrapes() {
+    // Transparently wrap JSON array on disc and treat as normal array (sort of)
     this._persistentArray = this._persistentArray || new PersistentArray(this.config.filename)
 
     return this._persistentArray
@@ -44,10 +44,7 @@ class Scraper extends EventEmitter {
     const page = await this.page
     await page.goto(this.config.url)
 
-    const reviewsCount = await scrapeReviewsCount({
-      page,
-      ...this.config
-    })
+    const reviewsCount = await scrapeReviewsCount({ page, ...this.config })
 
     const newScrape = { reviewsCount, createdAt: timeNow }
 

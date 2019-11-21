@@ -1,4 +1,4 @@
-const { outputPath } = require('../util/fs')
+const tryScrapeCatchScreenshot = require('./tryScrapeCatchScreenshot')
 
 const getTextContent = el => el.textContent
 
@@ -13,17 +13,12 @@ const scrapeReviewsCount = async ({
   getNum = getNumFromText,
   getElContent = getTextContent
 }) => {
-  try {
+  return tryScrapeCatchScreenshot(page, async () => {
     const reviewsCountEl = await page.$(selector)
     const reviewsCountText = await page.evaluate(getElContent, reviewsCountEl)
     const reviewsCount = getNum(reviewsCountText)
     return reviewsCount
-  } catch (err) {
-    const path = outputPath(`screenshots/error-${new Date()}.png`)
-    console.error(`Failed to scrape reviews: ${err.toString()}`)
-    console.log(`Saving screenshot to ${path}.`)
-    return page.screenshot({ path })
-  }
+  })
 }
 
 module.exports = {

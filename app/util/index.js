@@ -1,10 +1,12 @@
+const PersistentArray = require('./PersistentAray')
 const { scrapeReviewsCount } = require('./reviewsCount')
 const { output, readOrInitJsonArray } = require('./fs')
-const PersistentArray = require('./PersistentAray')
+const tryScrapeCatchScreenshot = require('./tryScrapeCatchScreenshot')
 
 module.exports = {
   PersistentArray,
   output,
   readOrInitJsonArray,
-  scrapeReviewsCount
+  scrapeReviewsCount,
+  tryScrapeCatchScreenshot
 }

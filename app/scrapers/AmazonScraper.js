@@ -2,6 +2,7 @@ const Scraper = require('./Scraper')
 const config = require('../config/amazon')
 const parseBestSellersRank = require('../util/parseBestSellersRank')
 const { logDiffInverse } = require('../util/diff')
+const { tryScrapeCatchScreenshot } = require('../util')
 
 const BOOKS_KEY = 'Books'
 const PAID_KINDLE_KEY = 'Paid in Kindle Store'
@@ -19,15 +20,21 @@ class AmazonScraper extends Scraper {
 
   async scrape(timeNow = new Date()) {
     const scrapeData = await super.scrape(timeNow)
-    const rankStats = await this.scrapeBestsellerStats(timeNow)
-    return {
-      ...scrapeData,
-      ...rankStats
-    }
-  }
+    const page = await this.page
 
-  async scrapeReviewsCount() {
-    return
+    const rankStats = await tryScrapeCatchScreenshot(
+      page,
+      async () => {
+        const rankStats = await this.scrapeBestsellerStats(timeNow)
+        return {
+          ...scrapeData,
+          ...rankStats
+        }
+      },
+      'amzn-best-seller-scrape'
+    )
+
+    return rankStats
   }
 
   async scrapeBestsellerStats(timeNow = new Date()) {
