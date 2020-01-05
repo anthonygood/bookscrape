@@ -52,7 +52,7 @@ class AmazonScraper extends Scraper {
 
     if (
       this.prevScrape &&
-      newScrape[BOOKS_KEY]       !== this.prevScrape[BOOKS_KEY] &&
+      newScrape[BOOKS_KEY]       !== this.prevScrape[BOOKS_KEY] ||
       newScrape[PAID_KINDLE_KEY] !== this.prevScrape[PAID_KINDLE_KEY]
     ) {
       this.emit('change:rank', this.prevScrape, newScrape)
@@ -64,6 +64,7 @@ class AmazonScraper extends Scraper {
   dirty(data) {
     // Amazon returns stats in different format about half the time,
     // but the Books and Paid in Kindle Store are common to both.
+    // -- NB. this is no longer the case, perhaps Amazon were A/B testing the format?
     const { prevScrape } = this
     return data.reviewsCount !== prevScrape.reviewsCount ||
       data[BOOKS_KEY] !== prevScrape[BOOKS_KEY] &&
