@@ -42,7 +42,6 @@ class AmazonScraper extends Scraper {
     const hardcoverStats = await this.scrapeStatsOnPage()
 
     await page.goto(this.config.kindleUrl)
-
     const kindleStats = await this.scrapeStatsOnPage()
 
     const newScrape = {
