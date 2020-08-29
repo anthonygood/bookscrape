@@ -79,17 +79,15 @@ class AmazonScraper extends Scraper {
   }
 
   async onChangeRank(prevVal, nextVal) {
-    {
-      prevVal = prevVal || { createdAt: 'Never!' }
-      const { createdAt: createdAtPrev, reviewsCount, ...prevRest } = prevVal
-      const { createdAt: createdAtNext, ...nextRest } = nextVal
-      const diffLog = logDiffInverse(prevRest, nextRest)
-      console.log(
-        `Last change of ${this.config.sitename} rank scraped at: ${prevVal.createdAt}
+    prevVal = prevVal || { createdAt: 'Never!' }
+    const { createdAt: createdAtPrev, reviewsCount, ...prevRest } = prevVal
+    const { createdAt: createdAtNext, ...nextRest } = nextVal
+    const diffLog = logDiffInverse(prevRest, nextRest)
+    console.log(
+      `Last change of ${this.config.sitename} rank scraped at: ${prevVal.createdAt}
 This scrape at ${nextVal.createdAt}:\n
 ${diffLog}`
-      )
-    }
+    )
   }
 }
 

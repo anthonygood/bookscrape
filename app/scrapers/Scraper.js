@@ -35,7 +35,7 @@ class Scraper extends EventEmitter {
   async scrapeAndSave() {
     const data = await this.scrape()
 
-    if (this.dirty(data)) {
+    if (data && this.dirty(data)) {
       this.scrapes.push(data)
     }
   }

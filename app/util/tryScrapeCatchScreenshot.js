@@ -8,7 +8,8 @@ const tryScrapeCatchScreenshot = async (page, fn, screenshotFilename = 'scrape')
     const path = outputPath(`screenshots/error-${screenshotFilename}-${new Date()}.png`)
     console.error(`Failed to scrape reviews: ${err.toString()}`)
     console.log(`Saving screenshot to ${path}.`)
-    return page.screenshot({ path })
+    await page.screenshot({ path })
+    return
   }
 }
 
