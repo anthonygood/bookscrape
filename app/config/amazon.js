@@ -7,4 +7,5 @@ module.exports = {
   url: PAPERBACK_URL,
   kindleUrl: KINDLE_URL,
   selector: '#acrCustomerReviewText',
+  rankDataSelector: '#detailBulletsWrapper_feature_div',
 }

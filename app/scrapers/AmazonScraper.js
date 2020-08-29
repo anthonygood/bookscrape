@@ -73,7 +73,7 @@ class AmazonScraper extends Scraper {
 
   async scrapeStatsOnPage() {
     const page = await this.page
-    const bestSellerStatsEl = await page.$('#SalesRank')
+    const bestSellerStatsEl = await page.$(this.config.rankDataSelector)
     const bestSellerText = await page.evaluate(_ => _.innerText, bestSellerStatsEl)
     return parseBestSellersRank(bestSellerText)
   }
