@@ -39,13 +39,13 @@ class AmazonScraper extends Scraper {
 
   async scrapeBestsellerStats(timeNow = new Date()) {
     const page = await this.page
-    const hardcoverStats = await this.scrapeStatsOnPage()
+    const paperbackStats = await this.scrapeStatsOnPage()
 
     await page.goto(this.config.kindleUrl)
     const kindleStats = await this.scrapeStatsOnPage()
 
     const newScrape = {
-      ...hardcoverStats,
+      ...paperbackStats,
       ...kindleStats,
       createdAt: timeNow
     }
