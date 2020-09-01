@@ -5,7 +5,7 @@ const { logDiffInverse } = require('../util/diff')
 const { tryScrapeCatchScreenshot } = require('../util')
 
 const BOOKS_KEY = 'Books'
-const PAID_KINDLE_KEY = 'Paid in Kindle Store'
+const PAID_KINDLE_KEY = 'Kindle Store'
 
 class AmazonScraper extends Scraper {
   constructor(page) {
