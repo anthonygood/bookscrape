@@ -22156,5 +22156,41 @@
     "Terrorism Thrillers (Kindle Store)": 189,
     "Political Fiction (Kindle Store)": 315,
     "Humourous Literary Fiction": 345
+  },
+  {
+    "reviewsCount": 48,
+    "createdAt": "2020-08-30T14:00:11.014Z",
+    "Books": 68464,
+    "Political Fiction (Books)": 629,
+    "Political Thrillers (Books)": 830,
+    "Humorous Fiction (Books)": 6241,
+    "Kindle Store": 106363,
+    "Terrorism Thrillers (Kindle Store)": 237,
+    "Political Fiction (Kindle Store)": 407,
+    "Humourous Literary Fiction": 443
+  },
+  {
+    "reviewsCount": 48,
+    "createdAt": "2020-08-30T21:00:12.014Z",
+    "Books": 112075,
+    "Political Fiction (Books)": 841,
+    "Political Thrillers (Books)": 1078,
+    "Humorous Fiction (Books)": 8504,
+    "Kindle Store": 114087,
+    "Terrorism Thrillers (Kindle Store)": 259,
+    "Political Fiction (Kindle Store)": 422,
+    "Humourous Literary Fiction": 455
+  },
+  {
+    "reviewsCount": 48,
+    "createdAt": "2020-09-01T19:33:53.014Z",
+    "Books": 177678,
+    "Political Fiction (Books)": 1137,
+    "Political Thrillers (Books)": 1443,
+    "Humorous Fiction (Books)": 11405,
+    "Kindle Store": 10455,
+    "Terrorism Thrillers (Kindle Store)": 45,
+    "Political Fiction (Kindle Store)": 80,
+    "Humourous Literary Fiction": 112
   }
 ]
