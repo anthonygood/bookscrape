@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "node": "^11.10.0",
-    "puppeteer": "^1.12.2"
+    "puppeteer": "^1.13.0"
   }
 }
